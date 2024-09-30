@@ -1,0 +1,1 @@
+# Resumo_Diario_Acoes
