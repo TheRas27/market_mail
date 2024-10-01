@@ -164,4 +164,5 @@ cython_debug/
 data/dados_brutos
 data/df_dia.csv
 data/df_dia_anterior.csv
+data/comparacao_de_acoes.png
 
