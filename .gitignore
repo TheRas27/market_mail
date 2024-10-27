@@ -162,8 +162,8 @@ cython_debug/
 #.idea/
 
 data/dados_brutos
-data/df_dia.csv
-data/df_dia_anterior.csv
+data/df_day.csv
+data/df_day_before.csv
 data/comparacao_de_acoes.png
 
 .python-version
