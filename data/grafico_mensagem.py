@@ -14,11 +14,16 @@ def grafico(df1, lista_acoes, mean=False):
 
     tam_geral = 12
     all_variacoes = []
+    lista_legend = []
 
     fig, fig_acoes1 = plt.subplots(figsize = (tam_geral,tam_geral/2))
 
     for acao in lista_acoes:
         df_aux = df1.loc[df1['acao']==acao,:].copy()
+        if df_aux.empty:
+            print(f'Ação não encontrada: {acao}')
+        else:
+            lista_legend.append(acao)
         df_aux['variacao'] = df_aux['Close'].pct_change() 
         df_aux['variacao'] = (1 + df_aux['variacao']).cumprod() - 1
         df_aux['variacao'] = df_aux['variacao'].apply(lambda x: round(x * 100, 5))
@@ -27,13 +32,12 @@ def grafico(df1, lista_acoes, mean=False):
         fig_acoes1.plot(df_aux['Datetime'], df_aux['variacao'],label=acao)
         all_variacoes.append(df_aux[['Datetime','variacao']])
 
-    lista_legend = lista_acoes
     if mean:
         # Média
         df_aux = pd.concat(all_variacoes,ignore_index=True)
         variacao_geral = df_aux.loc[:,['Datetime', 'variacao']].groupby('Datetime').mean()
-        fig_acoes1.plot(variacao_geral.index, variacao_geral ,label='Tendência Geral', color='white', linestyle='--', linewidth= 1.5)
-        lista_legend = lista_acoes + ['Média']
+        fig_acoes1.plot(variacao_geral.index, variacao_geral , color='white', linestyle='--', linewidth= 1.5)
+        lista_legend = lista_legend + ['Média']
 
     # plt.title( )
     fig_acoes1.set_xlabel('Horário',fontsize=tam_geral )
@@ -111,16 +115,15 @@ def mensagem(df1, lista_acoes):
     return frase
 
 
-df = pd.read_csv('df_dia.csv', parse_dates=['Datetime'])
+df = pd.read_csv('df_day.csv', parse_dates=['Datetime'])
 
 # lista_acoes = ['VALE3','BBSE3', 'CSAN3', 'RAIZ4', 'BRBI11', 'BBAS3', 'SAPR4', 'SAPR11', 'TRPL4', 'RANI3', 'TAEE11']
 lista_acoes = ['VALE3', 'SAPR4', 'BBAS3', 'TRPL4']
 
-# fra = frase + mens_fin
 mens = mensagem(df, lista_acoes)
 print(mens)
 
-fig = grafico(df, lista_acoes)#, mean=True)
+fig = grafico(df, lista_acoes, mean=True)
 fig.savefig('comparacao_de_acoes.png', dpi=300)
 
 
