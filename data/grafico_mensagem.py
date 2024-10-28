@@ -100,30 +100,34 @@ def mensagem(df1, lista_acoes):
         if len(f"{df_test.iloc[-1,1]:.2f}") <5:
             if df_test.iloc[-1,3] > 0:
                 val = f" | +{df_test.iloc[-1,3]:.2f}% {simbolo}\n"
+            elif df_test.iloc[-1,3] == 0:
+                val = f" |  {df_test.iloc[-1,3]:.2f}% {simbolo}\n"
             else: 
                 val = f" | {df_test.iloc[-1,3]:.2f}% {simbolo}\n"
 
         else:
             if df_test.iloc[-1,3] > 0:
                 val = f"| +{df_test.iloc[-1,3]:.2f}% {simbolo}\n"
+            elif df_test.iloc[-1,3] == 0:
+                val = f"|  {df_test.iloc[-1,3]:.2f}% {simbolo}\n"
             else: 
                 val = f"| {df_test.iloc[-1,3]:.2f}% {simbolo}\n"
 
         frase = frase + result + val
 
-    frase = "Variação das ações selecionadas::\n" + frase
+    frase = "Variação das ações selecionadas:\n" + frase + f'\nAtualizado: {df1['Datetime'].iloc[-1]}'
     return frase
 
 
 df = pd.read_csv('df_day.csv', parse_dates=['Datetime'])
 
-# lista_acoes = ['VALE3','BBSE3', 'CSAN3', 'RAIZ4', 'BRBI11', 'BBAS3', 'SAPR4', 'SAPR11', 'TRPL4', 'RANI3', 'TAEE11']
-lista_acoes = ['VALE3', 'SAPR4', 'BBAS3', 'TRPL4']
+lista_acoes = ['VALE3','BBSE3', 'CSAN3', 'RAIZ4', 'BRBI11', 'BBAS3', 'SAPR4', 'SAPR11', 'TRPL4', 'RANI3', 'TAEE11']
+# lista_acoes = ['VALE3', 'SAPR4', 'BBAS3', 'TRPL4']
 
 mens = mensagem(df, lista_acoes)
 print(mens)
 
-fig = grafico(df, lista_acoes, mean=True)
+fig = grafico(df, lista_acoes[0:6], mean=False)
 fig.savefig('comparacao_de_acoes.png', dpi=300)
 
 

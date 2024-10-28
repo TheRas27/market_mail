@@ -33,7 +33,7 @@ def buscar_dados_diarios():
     end_day = now.day
     end_date = (now + timedelta(days=1)).strftime("%Y-%m-%d")
 
-    if now.weekday() == 7: now = now - timedelta(days=3) # Retrocede para sexta
+    if now.weekday() == 0: now = now - timedelta(days=2) # Retrocede para sexta
     date_previous = now - timedelta(days=1)
     start_day = date_previous.day    
     start_date = date_previous.strftime("%Y-%m-%d")
@@ -45,7 +45,7 @@ def buscar_dados_diarios():
                        'NTCO3.SA', 'HYPE3.SA',  'PETR3.SA', 'PETR4.SA', 'POSI3.SA', 'PRIO3.SA', 'QUAL3.SA', 'RADL3.SA' ,'RAIL3.SA', 'RENT3.SA', 'SANB11.SA','SBSP3.SA',
                        'SAPR4.SA', 'SAPR11.SA', 'SUZB3.SA', 'TAEE11.SA','TRPL4.SA', 'TOTS3.SA', 'UGPA3.SA', 'USIM5.SA','VALE3.SA', 'BRBI11.SA', 'RAIZ4.SA', 'RANI3.SA',
                        'KLBN3.SA', 'KLBN4.SA', 'KLBN11.SA']
-    
+
     count = 0
     for acao in brasil_tickers:
         dados_diarios = baixar_dados(acao, start_date, end_date)
@@ -66,7 +66,6 @@ def buscar_dados_diarios():
     resultado = pd.concat(dfs, ignore_index=True)
     resultado['Datetime'] = pd.to_datetime(resultado['Datetime'])
     resultado['day'] = resultado['Datetime'].dt.day
-    resultado.to_csv('df_day.csv', index=False)
 
     # dados do dia anterior
     dados_start_day = resultado.loc[resultado['day'] == start_day, :]
@@ -75,6 +74,7 @@ def buscar_dados_diarios():
     # dados ultimo dia
     dados_end_day = resultado.loc[resultado['day'] == end_day, :]
     dados_end_day.to_csv('df_day.csv', index=False)
+    
 
         
 buscar_dados_diarios()
