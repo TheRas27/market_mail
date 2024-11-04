@@ -56,7 +56,10 @@ def buscar_dados_diarios():
         dados_diarios['acao'] = acao.replace('.SA', '')  # Adiciona a coluna com o nome da ação
         dados_diarios = dados_diarios.reset_index()
         count = count +1
-        print(f'Coletados Dados Diarios da Ação {dados_diarios['acao'][0]}')
+        try:
+            print(f'Coletados Dados Diarios da Ação {dados_diarios['acao'][0]}')
+        except:
+            return 
         print(f'Total de ações: {count}')
         
         dfs.append(dados_diarios)
